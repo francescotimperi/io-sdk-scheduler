@@ -1,10 +1,10 @@
 import cron from 'node-cron';
 
 /**
- * Represents a simple Job that could be scheduled using
+ * Represents a simple JobData that could be scheduled using
  * a cron like time expression.
  */
-class Job {
+class JobData {
 
     public jobName: string;
     public time: string;
@@ -27,4 +27,4 @@ class Job {
 
 }
 
-export default Job;
+export default JobData;

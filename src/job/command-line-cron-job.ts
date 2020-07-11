@@ -1,15 +1,15 @@
 import cron from 'node-cron';
-import Job from "../model/job";
+import JobData from "../model/job-data";
 import Runnable from "../command/runnable";
 import CommandLine from "../command/command-line";
 import SchedulingResult from "../model/scheduling-result";
 
 class CommandLineCronJob {
-    private job: Job;
+    private job: JobData;
     private task: Runnable;
     private scheduledInstance: any;
 
-    constructor(job: Job) {
+    constructor(job: JobData) {
         this.job = job;
         this.task = new CommandLine(this.job.action);
     }
@@ -19,10 +19,15 @@ class CommandLineCronJob {
     }
 
     public getStatus(): string {
-        return this.scheduledInstance.status;
+        if(this.scheduledInstance) {
+            return this.scheduledInstance.status;
+        } else {
+            return 'unscheduled';
+        }
+
     }
 
-    public getSchedulingResult() {
+    public getSchedulingResult() : SchedulingResult {
         const result = new SchedulingResult();
 
         result.error = false;
@@ -35,7 +40,7 @@ class CommandLineCronJob {
     /**
      * Start the CronJob
      */
-    public start() : any {
+    public async start()  {
         this.scheduledInstance = cron.schedule(this.job.time, () => {
             console.log('Firing jobName',this.job.jobName);
             this.task.run();
@@ -54,7 +59,9 @@ class CommandLineCronJob {
     }
 
     public logInstanceData() {
-        console.log(this.scheduledInstance);
+        if(this.scheduledInstance) {
+            console.log(this.scheduledInstance);
+        }
     }
 
 }

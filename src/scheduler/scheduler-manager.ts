@@ -1,21 +1,24 @@
 import Scheduler from "./scheduler";
-import Job from "../model/job";
+import JobData from "../model/job-data";
 import SchedulingResult from "../model/scheduling-result";
 
 class SchedulerManager {
 
     private scheduler: Scheduler;
 
+    /**
+     * @TODO Place code to re-initialize the scheduler from persisted configuration.
+     */
     constructor() {
         this.scheduler = new Scheduler();
     }
 
     /**
-     * Schedule a Job into the internal simple scheduler.
+     * Schedule a JobData into the internal simple scheduler.
      *
      * @param aJob
      */
-    public scheduleJob(aJob: Job): SchedulingResult {
+    public scheduleJob(aJob: JobData): SchedulingResult {
         return this.scheduler.scheduleJob(aJob);
     }
 

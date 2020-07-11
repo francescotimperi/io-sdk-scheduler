@@ -1,4 +1,5 @@
 import CommandLineCronJob from "../job/command-line-cron-job";
+import SchedulingResult from "../model/scheduling-result";
 
 class Storage {
 
@@ -7,7 +8,7 @@ class Storage {
     constructor() {}
 
     /**
-     * Add a Job into the JobStorage.
+     * Add a JobData into the JobStorage.
      *
      * @param aJob
      */
@@ -16,7 +17,7 @@ class Storage {
     }
 
     /**
-     * Return hte scheduled Job Mapping the name.
+     * Return hte scheduled JobData Mapping the name.
      *
      * @param jobName
      */
@@ -30,7 +31,7 @@ class Storage {
     }
 
     /**
-     * Remove the scheduled Job Mapping the name.
+     * Remove the scheduled JobData Mapping the name.
      *
      * @param jobName
      */
@@ -41,10 +42,9 @@ class Storage {
         }
     }
 
-    getJobs(): any {
+    getJobs(): Array<SchedulingResult> {
         const result = [];
         this.scheduledTasks.forEach((job: CommandLineCronJob) => {
-            job.logInstanceData();
             result.push(job.getSchedulingResult());
         })
         return result;

@@ -1,6 +1,6 @@
 import express from 'express';
 import SchedulerManager from "../scheduler/scheduler-manager";
-import Job from "../model/job";
+import JobData from "../model/job-data";
 
 
 class AppRouter {
@@ -18,7 +18,7 @@ class AppRouter {
 
         this.router.post('/scheduler', (req,res) => {
             const params = req.body;
-            const aJob = new Job(params.jobName,params.time,params.action);
+            const aJob = new JobData(params.jobName,params.time,params.action);
             const schedulingResult = this.scheduler.scheduleJob(aJob);
             res.status(schedulingResult.error ? '400':'200').json(schedulingResult);
         });
@@ -31,7 +31,6 @@ class AppRouter {
 
         this.router.get('/scheduler', (req, res) => {
             const scheduledTasks = this.scheduler.getScheduledJobs();
-            console.log(scheduledTasks);
             res.status('200').json(scheduledTasks);
         })
 
