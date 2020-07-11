@@ -11,7 +11,7 @@ const cronJob = new CommandLineCronJob(aJob);
 describe("Storage",function(){
     describe("save", function(){
         it('should store a job into the internal Map', function () {
-            store.save(cronJob);
+            store.save(cronJob, false);
             chai.expect(1).to.equal(store.getJobs().length);
         });
     })

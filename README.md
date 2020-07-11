@@ -76,10 +76,34 @@ Send a DELETE to endpoint `http://localhost:3000/scheduler` using this JSON stru
 curl -X DELETE -d '{"jobName":"testJob"}' http://localhost:3000/scheduler --header "Content-Type:application/json"
 ```
 
+### scheduled job persistence
+The scheduler uses a JSON file to persist information about the scheduled job. This will be used when the server it is restarted. the JSON structure persisted looks like
+
+```
+[{
+            "jobName": "testJob",
+            "time": "*/1 * * * *",
+            "action": "echo test message logged every 1 minute"
+}]
+```
+
+the path to the configuration file can be configured using the ENV variable `IO_SDK_SCHEDULER_CONFIG`. If not available the scheduler fallback to the a default config file
+`${HOME}/io-sdk-scheduler-config.json` inside the home folder of the user running the node.js server.
+
+### Builing docker image and launch
+
+Execute
+
+```
+make build
+make start
+```
+
+The example makefile launch a docker instance running the image mount the `${HOME}` onto the container path `/scheduler/config` and set the 
+ENV variable `IO_SDK_SCHEDULER_CONFIG='/scheduler/config/io-sdk-scheduler-container-config.json'`
+
 ###
 [ToDO]
 
-- Additional Testing
 - Input sanitization
-- Docker Image
 

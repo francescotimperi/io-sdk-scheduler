@@ -1,6 +1,7 @@
 import Scheduler from "./scheduler";
 import JobData from "../model/job-data";
 import SchedulingResult from "../model/scheduling-result";
+import SchedulerConfigurator from "../config/scheduler-configurator";
 
 class SchedulerManager {
 
@@ -11,6 +12,23 @@ class SchedulerManager {
      */
     constructor() {
         this.scheduler = new Scheduler();
+        this.restoreConfiguredJob();
+    }
+
+    /**
+     * Insert into the Scheduler all the
+     * previously configured Job.
+     */
+    private restoreConfiguredJob(){
+        const configurator = new SchedulerConfigurator();
+        const jobArray: Array<any> = configurator.retrievePersistedJobs();
+
+        if(jobArray && jobArray.length > 0) {
+            console.log('Initializing persisted Jobs');
+            jobArray.forEach( (aJob) => {
+                this.scheduler.scheduleJob(aJob, false);
+            })
+        }
     }
 
     /**
@@ -19,7 +37,7 @@ class SchedulerManager {
      * @param aJob
      */
     public scheduleJob(aJob: JobData): SchedulingResult {
-        return this.scheduler.scheduleJob(aJob);
+        return this.scheduler.scheduleJob(aJob, true);
     }
 
     public getScheduledJobs(): Array<SchedulingResult> {

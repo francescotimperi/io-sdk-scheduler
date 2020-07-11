@@ -2,6 +2,7 @@ import JobData from "../model/job-data";
 import Storage from "../store/storage";
 import CommandLineCronJob from "../job/command-line-cron-job";
 import SchedulingResult from "../model/scheduling-result";
+import cron from 'node-cron';
 
 /**
  * Class Representing a simple Scheduler Engine
@@ -15,10 +16,20 @@ class Scheduler {
     }
 
     /**
+     * Validate the cron expression.
+     *
+     * return true if the instance is created with a valid
+     */
+    private validate(aJob: JobData): boolean {
+        return cron.validate(aJob.time);
+    }
+
+    /**
      *
      * @param aJob
+     * @param persist if true the job must be persisted too.
      */
-    public scheduleJob(aJob: JobData) : SchedulingResult {
+    public scheduleJob(aJob: JobData, persist: boolean) : SchedulingResult {
         let result = new SchedulingResult();
 
         if( this.jobStore.getJob(aJob.jobName) != null ) {
@@ -27,10 +38,10 @@ class Scheduler {
             return result;
         }
 
-        if(aJob.validate()){
+        if(this.validate(aJob)){
             let scheduledJob = new CommandLineCronJob(aJob);
             scheduledJob.start();
-            this.jobStore.save(scheduledJob);
+            this.jobStore.save(scheduledJob, persist);
 
             result.error = false;
             result.job = aJob;

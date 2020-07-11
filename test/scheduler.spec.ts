@@ -13,7 +13,7 @@ const aJob = new JobData('testJob',"*/1 * * * *",'echo this is a message');
 describe("Scheduler",function(){
     describe("scheduleJob", function(){
         it('should schedule a Job and return a scheduled instance', function () {
-            const schedulerResult: SchedulingResult = scheduler.scheduleJob(aJob);
+            const schedulerResult: SchedulingResult = scheduler.scheduleJob(aJob, false);
             chai.expect("scheduled").to.equal(schedulerResult.status);
         });
     })

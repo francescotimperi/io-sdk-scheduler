@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "nodemon",
-    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+    "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
