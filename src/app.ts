@@ -1,5 +1,6 @@
 import  express from 'express';
 import AppRouter from "./routes/router";
+import cors from 'cors';
 
 class App {
     public express
@@ -7,6 +8,7 @@ class App {
     constructor () {
         this.express = express();
         this.express.use(express.json());
+        this.express.use(cors());
         this.mountRoutes();
     }
 
